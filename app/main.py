@@ -19,8 +19,31 @@ class BaseballCrawler():
     def __record_crawler(self, result):
         html = driver.page_source
         soup = BeautifulSoup(html,'html.parser')
-        test = soup.find('body > div.record_list')
-        print(test)
+        self.__batting_average_crawler(soup)
+        self.__homerun_crawler(soup)
+        self.__average_ERA_crawler(soup)
+        self.__vitory_pitcher_crawler(soup)
+
+    def __batting_average_crawler(self, soup):
+        batting_average_top5 = soup.select('div.player_top5 > ol.rankList')[0].text
+        print(batting_average_top5)
+
+    def __homerun_crawler(self, soup):
+        homerun_top5 = soup.select('div.player_top5 > ol.rankList')[1].text
+        print(homerun_top5)
+
+    def __average_ERA_crawler(self, soup):
+        average_ERA_top5 = soup.select('div.record_list.mt40.mb30 > div.record.mr15')[0].text
+        print(average_ERA_top5)
+
+    def __vitory_pitcher_crawler(self, soup):
+        vitory_pitcher_top5 = soup.select('div.record_list.mt40.mb30 > div.record')[1].text
+        print(vitory_pitcher_top5)
+
+
+
+
+
 
 
 
