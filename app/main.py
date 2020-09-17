@@ -1,22 +1,14 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import pymysql
+
+from Database import model
 
 driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
-baseball_db = pymysql.connect(
-    user='root',
-    password='qlsgus4613',
-    host='127.0.0.1',
-    db='Baseball_Record',
-    charset='utf8'
-)
-
-cursor = baseball_db.cursor(pymysql.cursors.DictCursor)
-
-class BaseballCrawler():
+class baseball_crawler():
     def __init__(self):
+        model.handling_database()
         self.__move_page()
 
 
@@ -62,4 +54,4 @@ class BaseballCrawler():
 
 
 if __name__ == '__main__':
-    BaseballCrawler()
+    baseball_crawler()
