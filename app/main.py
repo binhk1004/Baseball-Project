@@ -8,7 +8,7 @@ url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
 class baseball_crawler():
     def __init__(self):
-        model.handling_database()
+        # model.handling_database()
         self.__move_page()
 
 
@@ -23,13 +23,17 @@ class baseball_crawler():
         html = driver.page_source
         soup = BeautifulSoup(html,'html.parser')
         self.__batting_average_crawler(soup)
-        self.__homerun_crawler(soup)
-        self.__average_ERA_crawler(soup)
-        self.__vitory_pitcher_crawler(soup)
+        # self.__homerun_crawler(soup)
+        # self.__average_ERA_crawler(soup)
+        # self.__vitory_pitcher_crawler(soup)
 
     def __batting_average_crawler(self, soup):
-        batting_average_top5 = soup.select('div.player_top5 > ol.rankList')[0].text
-        print(batting_average_top5)
+        batting_average_top5 = soup.select('div.player_top5 > ol.rankList')[0].text.split()
+        player_names = soup.select('ol.rankList > span')
+        print(player_names)
+        # for player_name in player_names:
+        #     print(player_name)
+
 
     def __homerun_crawler(self, soup):
         homerun_top5 = soup.select('div.player_top5 > ol.rankList')[1].text
