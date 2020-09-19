@@ -15,7 +15,7 @@ class handling_database():
         return self.__create_table(baseball_db)
 
     def __create_table(self,baseball_db) :
-        sql = '''CREATE TABLE record_table (
+        sql = '''CREATE TABLE batting_average_top5 (
         id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
         player_name varchar(255),
         team_name varchar(255),

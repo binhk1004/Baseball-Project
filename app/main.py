@@ -29,10 +29,14 @@ class baseball_crawler():
 
     def __batting_average_crawler(self, soup):
         batting_average_top5 = soup.select('div.player_top5 > ol.rankList')[0].text.split()
-        player_names = soup.select('ol.rankList > span')
-        print(player_names)
-        # for player_name in player_names:
-        #     print(player_name)
+        averages = soup.select('ol.rankList')[0].select('li')
+        for average in averages:
+            batting_average_data = {
+            'player_name':average.text.split()[0],
+            'team_name':average.text.split()[1],
+            'batting_average':average.text.split()[2]
+            }
+            return batting_average_data
 
 
     def __homerun_crawler(self, soup):
