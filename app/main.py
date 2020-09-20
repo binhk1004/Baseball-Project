@@ -1,14 +1,14 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-from Database import model
+from Database.model import handling_database
 
 driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
 class baseball_crawler():
     def __init__(self):
-        # model.handling_database()
+        handling_database()
         self.__move_page()
 
 
@@ -27,8 +27,7 @@ class baseball_crawler():
         # self.__average_ERA_crawler(soup)
         # self.__vitory_pitcher_crawler(soup)
 
-    def __batting_average_crawler(self, soup):
-        batting_average_top5 = soup.select('div.player_top5 > ol.rankList')[0].text.split()
+    def _batting_average_crawler(self, soup):
         averages = soup.select('ol.rankList')[0].select('li')
         for average in averages:
             batting_average_data = {
