@@ -1,9 +1,8 @@
 import pymysql
 
-class handling_database():
+class HandlingDatabase():
     def __init__(self):
         self.__connet_database()
-
 
     def __connet_database(self):
         baseball_db = pymysql.connect(
@@ -31,10 +30,10 @@ class handling_database():
         return baseball_db
 
     def _insert_data(self, baseball_db, batting_average_data):
-        sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values(%s, %s, %s)'''
+        sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values()'''
 
         cursor = baseball_db.cursor()
-        cursor.execute(sql,batting_average_data)
+        cursor.execute(sql, batting_average_data)
 
         baseball_db.commit()
         baseball_db.close()
