@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from Database.model import HandlingDatabase
+from Database.model import HandlingDataBase
 
 driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
@@ -8,7 +8,7 @@ url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 class baseball_crawler():
     def __init__(self):
         self.__move_page()
-        HandlingDatabase()
+        HandlingDataBase()
 
 
     def __move_page(self):
@@ -34,7 +34,7 @@ class baseball_crawler():
             'team_name':average.text.split()[1],
             'batting_average':average.text.split()[2]
             }
-            return HandlingDatabase()
+            return batting_average_data
 
 
 
