@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from Database.model import HandlingDataBase
+from Database import model
 
 driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
@@ -8,7 +8,7 @@ url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 class baseball_crawler():
     def __init__(self):
         self.__move_page()
-        HandlingDataBase()
+        model.HandlingDataBase()
 
 
     def __move_page(self):

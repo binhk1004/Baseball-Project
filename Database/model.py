@@ -1,4 +1,5 @@
 import pymysql
+from app import main
 
 
 class HandlingDataBase():
@@ -16,6 +17,7 @@ class HandlingDataBase():
         return self.__create_table(baseball_db)
 
     def __create_table(self, baseball_db):
+
         sql = '''CREATE TABLE batting_average_top5 (
         id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
         player_name varchar(255),
@@ -27,14 +29,17 @@ class HandlingDataBase():
         cursor = baseball_db.cursor()
         cursor.execute(sql)
         baseball_db.commit()
-        self._insert_data(baseball_db)
+        batting_average_data = main.baseball_crawler._batting_average_crawler()
+        self._insert_data(baseball_db, batting_average_data)
 
     def _insert_data(self, baseball_db, batting_average_data):
 
-        sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values(%s, %s, %s)'''
+        for player_name, team_name, batting_average in batting_average_data:
 
-        cursor = baseball_db.cursor()
-        cursor.execute(sql, batting_average_data['player_name'],batting_average_data['team_name'], batting_average_data['batting_average'])
+            sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values(%s, %s, %s)'''
+
+            cursor = baseball_db.cursor()
+            cursor.execute(sql, player_name, team_name, batting_average)
 
         baseball_db.commit()
         baseball_db.close()
