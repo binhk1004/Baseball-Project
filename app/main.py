@@ -1,14 +1,14 @@
+import pymysql
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from Database import model
 
 driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
-class baseball_crawler():
+class BaseballCrawler():
     def __init__(self):
         self.__move_page()
-        model.HandlingDataBase()
+        HandlingDataBase()
 
 
     def __move_page(self):
@@ -28,13 +28,15 @@ class baseball_crawler():
 
     def _batting_average_crawler(self, soup):
         averages = soup.select('ol.rankList')[0].select('li')
+        baseball_db = HandlingDataBase().connet_database()
         for average in averages:
             batting_average_data = {
             'player_name':average.text.split()[0],
             'team_name':average.text.split()[1],
             'batting_average':average.text.split()[2]
             }
-            return batting_average_data
+            print(batting_average_data)
+            HandlingDataBase().insert_data(baseball_db, batting_average_data)
 
 
 
@@ -51,14 +53,49 @@ class baseball_crawler():
         print(vitory_pitcher_top5)
 
 
+class HandlingDataBase():
+    def __init__(self):
+        self.connet_database()
+
+    def connet_database(self):
+        baseball_db = pymysql.connect(
+            user='root',
+            password='qlsgus4613',
+            host='127.0.0.1',
+            db='Baseball_Record',
+            charset='utf8'
+        )
+
+    def __create_table(self, baseball_db):
+
+        sql = '''CREATE TABLE batting_average_top5 (
+        id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        player_name varchar(255),
+        team_name varchar(255),
+        batting_average varchar(255)
+        )
+        '''
+
+        cursor = baseball_db.cursor()
+        cursor.execute(sql)
+        baseball_db.commit()
+
+    def insert_data(self, baseball_db, batting_average_data):
+
+        for data in batting_average_data:
+
+            sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values (data)'''
 
 
+            cursor = baseball_db.cursor()
+            cursor.execute(sql, data)
 
-
+        baseball_db.commit()
+        baseball_db.close()
 
 
 
 
 
 if __name__ == '__main__':
-    baseball_crawler()
+    BaseballCrawler()
