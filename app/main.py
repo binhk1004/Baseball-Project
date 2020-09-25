@@ -30,12 +30,11 @@ class BaseballCrawler():
         averages = soup.select('ol.rankList')[0].select('li')
         baseball_db = HandlingDataBase().connet_database()
         for average in averages:
-            batting_average_data = {
-            'player_name':average.text.split()[0],
-            'team_name':average.text.split()[1],
-            'batting_average':average.text.split()[2]
-            }
-            print(batting_average_data)
+            batting_average_data = [
+            average.text.split()[0],
+            average.text.split()[1],
+            average.text.split()[2]
+            ]
             HandlingDataBase().insert_data(baseball_db, batting_average_data)
 
 
@@ -65,6 +64,7 @@ class HandlingDataBase():
             db='Baseball_Record',
             charset='utf8'
         )
+        curs = baseball_db.cursor()
 
     def __create_table(self, baseball_db):
 
@@ -75,20 +75,15 @@ class HandlingDataBase():
         batting_average varchar(255)
         )
         '''
+        curs = baseball_db.cursor()
 
-        cursor = baseball_db.cursor()
-        cursor.execute(sql)
-        baseball_db.commit()
+    def insert_data(self, baseball_db, batting_average_data, curs):
 
-    def insert_data(self, baseball_db, batting_average_data):
-
-        for data in batting_average_data:
-
-            sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values (data)'''
+        sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values (batting_average_data)'''
+        print(batting_average_data)
 
 
-            cursor = baseball_db.cursor()
-            cursor.execute(sql, data)
+        curs.execute(sql)
 
         baseball_db.commit()
         baseball_db.close()
