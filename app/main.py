@@ -28,14 +28,14 @@ class BaseballCrawler():
 
     def _batting_average_crawler(self, soup):
         averages = soup.select('ol.rankList')[0].select('li')
-        baseball_db = HandlingDataBase().connet_database()
+        baseball_db = HandlingDataBase.connet_database(self)
         for average in averages:
             batting_average_data = [
             average.text.split()[0],
             average.text.split()[1],
             average.text.split()[2]
             ]
-            HandlingDataBase().insert_data(baseball_db, batting_average_data)
+            HandlingDataBase.insert_data(baseball_db, batting_average_data)
 
 
 
@@ -56,6 +56,8 @@ class HandlingDataBase():
     def __init__(self):
         self.connet_database()
 
+
+
     def connet_database(self):
         baseball_db = pymysql.connect(
             user='root',
@@ -64,9 +66,10 @@ class HandlingDataBase():
             db='Baseball_Record',
             charset='utf8'
         )
-        curs = baseball_db.cursor()
+        self.create_table(baseball_db)
+        baseball_db.cursor()
 
-    def __create_table(self, baseball_db):
+    def create_table(self, baseball_db):
 
         sql = '''CREATE TABLE batting_average_top5 (
         id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -75,15 +78,18 @@ class HandlingDataBase():
         batting_average varchar(255)
         )
         '''
-        curs = baseball_db.cursor()
 
-    def insert_data(self, baseball_db, batting_average_data, curs):
+        cur = baseball_db.cursor()
+        cur.execute(sql)
+
+
+    def insert_data(self, baseball_db, batting_average_data):
 
         sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values (batting_average_data)'''
         print(batting_average_data)
 
-
-        curs.execute(sql)
+        cur = baseball_db.cursor()
+        cur.execute(sql)
 
         baseball_db.commit()
         baseball_db.close()
