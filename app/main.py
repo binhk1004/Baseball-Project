@@ -8,7 +8,6 @@ url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 class BaseballCrawler():
     def __init__(self):
         self.__move_page()
-        HandlingDataBase()
 
 
     def __move_page(self):
@@ -28,14 +27,13 @@ class BaseballCrawler():
 
     def _batting_average_crawler(self, soup):
         averages = soup.select('ol.rankList')[0].select('li')
-        baseball_db = HandlingDataBase.connet_database(self)
         for average in averages:
             batting_average_data = [
             average.text.split()[0],
             average.text.split()[1],
             average.text.split()[2]
             ]
-            HandlingDataBase.insert_data(baseball_db, batting_average_data)
+            return HandlingDataBase()
 
 
 
@@ -67,7 +65,6 @@ class HandlingDataBase():
             charset='utf8'
         )
         self.create_table(baseball_db)
-        baseball_db.cursor()
 
     def create_table(self, baseball_db):
 
@@ -81,6 +78,7 @@ class HandlingDataBase():
 
         cur = baseball_db.cursor()
         cur.execute(sql)
+        return self.insert_data(baseball_db)
 
 
     def insert_data(self, baseball_db, batting_average_data):
