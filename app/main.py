@@ -2,7 +2,7 @@ import pymysql
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
+driver = webdriver.Chrome('/Users/hyun/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
 class BaseballCrawler():
@@ -51,6 +51,7 @@ class BaseballCrawler():
 
 
 class HandlingDataBase():
+
     def __init__(self):
         self.connet_database()
 
