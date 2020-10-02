@@ -76,12 +76,8 @@ class BaseballCrawler():
 
     def __insert_data(self, baseball_db, batting_average_data):
         cur = baseball_db.cursor()
-        sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values (batting_average_data)'''
-        print(batting_average_data[0])
-        print(batting_average_data[1])
-        print(batting_average_data[2])
-
-        cur.execute(sql)
+        sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values (%s, %s, %s)'''
+        cur.execute(sql,(batting_average_data[0], batting_average_data[1], batting_average_data[2]))
 
         baseball_db.commit()
         baseball_db.close()
