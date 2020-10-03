@@ -2,7 +2,7 @@ import pymysql
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-driver = webdriver.Chrome('/Users/hyun/Downloads/chromedriver')
+driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
 class BaseballCrawler():
@@ -57,7 +57,7 @@ class BaseballCrawler():
             db='Baseball_Record',
             charset='utf8'
         )
-        self.__create_table(baseball_db)
+        # self.__create_table(baseball_db)
         return baseball_db
 
     def __create_table(self, baseball_db):
@@ -80,7 +80,6 @@ class BaseballCrawler():
         cur.execute(sql,(batting_average_data[0], batting_average_data[1], batting_average_data[2]))
 
         baseball_db.commit()
-        baseball_db.close()
 
 
 
