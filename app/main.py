@@ -80,10 +80,6 @@ class BaseballCrawler():
         cur.execute(sql,(batting_average_data[0], batting_average_data[1], batting_average_data[2]))
 
         baseball_db.commit()
-        baseball_db.close()
-
-
-
 
 
 if __name__ == '__main__':
