@@ -2,13 +2,13 @@ import pymysql
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-driver = webdriver.Chrome('/Users/binhk1004/Downloads/chromedriver')
+driver = webdriver.Chrome('/Users/hyun/Downloads/chromedriver')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
 class BaseballCrawler():
     def __init__(self):
         self.__move_page()
-        # self.__connet_database()
+        self.__connet_database()
 
 
     def __move_page(self):
@@ -38,6 +38,7 @@ class BaseballCrawler():
             self.__insert_data(baseball_db, batting_average_data)
 
     def __homerun_crawler(self, soup):
+        baseball_db = self.__connet_database()
         players = soup.select('div.player_top5 > ol.rankList')[1].select('li')
         for player in players:
             homerun_top5 = [
@@ -45,7 +46,7 @@ class BaseballCrawler():
                 player.text.split()[1],
                 player.text.split()[2]
             ]
-            print(homerun_top5)
+            self.__insert_data(baseball_db, homerun_top5)
 
     def __average_ERA_crawler(self, soup):
         average_ERA_top5 = soup.select('div.record_list.mt40.mb30 > div.record.mr15')[0].text
@@ -63,12 +64,12 @@ class BaseballCrawler():
             db='Baseball_Record',
             charset='utf8'
         )
-        # self.__create_table(baseball_db)
+        self.__create_table(baseball_db)
         return baseball_db
 
     def __create_table(self, baseball_db):
 
-        sql = '''CREATE TABLE batting_average_top5 (
+        sql = '''CREATE TABLE homerun_top5 (
         id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
         player_name varchar(255),
         team_name varchar(255),
@@ -80,10 +81,10 @@ class BaseballCrawler():
         cur.execute(sql)
 
 
-    def __insert_data(self, baseball_db, batting_average_data):
+    def __insert_data(self, baseball_db, homerun_top5):
         cur = baseball_db.cursor()
-        sql = '''INSERT INTO batting_average_top5 (player_name, team_name, batting_average) values (%s, %s, %s)'''
-        cur.execute(sql,(batting_average_data[0], batting_average_data[1], batting_average_data[2]))
+        sql = '''INSERT INTO homerun_top5 (player_name, team_name, batting_average) values (%s, %s, %s)'''
+        cur.execute(sql,(homerun_top5[0], homerun_top5[1], homerun_top5[2]))
 
         baseball_db.commit()
 
