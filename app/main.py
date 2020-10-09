@@ -2,13 +2,13 @@ import pymysql
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-driver = webdriver.Chrome('/Users/hyun/Downloads/chromedriver')
+driver = webdriver.Chrome('/Users/hyun/Downloads/chromedriver 2')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
 class BaseballCrawler():
     def __init__(self):
         self.__move_page()
-        self.__connet_database()
+        # self.__connet_database()
 
 
     def __move_page(self):
@@ -22,8 +22,8 @@ class BaseballCrawler():
         html = driver.page_source
         soup = BeautifulSoup(html,'html.parser')
         # self.__batting_average_crawler(soup)
-        self.__homerun_crawler(soup)
-        # self.__average_ERA_crawler(soup)
+        # self.__homerun_crawler(soup)
+        self.__average_ERA_crawler(soup)
         # self.__vitory_pitcher_crawler(soup)
 
     def __batting_average_crawler(self, soup):
@@ -35,7 +35,7 @@ class BaseballCrawler():
             average.text.split()[1],
             average.text.split()[2]
             ]
-            self.__insert_data(baseball_db, batting_average_data)
+            # self.__insert_data(baseball_db, batting_average_data)
 
     def __homerun_crawler(self, soup):
         baseball_db = self.__connet_database()
@@ -46,11 +46,18 @@ class BaseballCrawler():
                 player.text.split()[1],
                 player.text.split()[2]
             ]
-            self.__insert_data(baseball_db, homerun_top5)
+            # self.__insert_data(baseball_db, homerun_top5)
 
     def __average_ERA_crawler(self, soup):
-        average_ERA_top5 = soup.select('div.record_list.mt40.mb30 > div.record.mr15')[0].text
-        print(average_ERA_top5)
+        baseball_db = self.__connet_database()
+        averages = soup.select('div.record_list.mt40.mb30 > div.record.mr15')[0].select('li')
+        for average in averages:
+            average_ERA = [
+                average.text.split()[0],
+                average.text.split()[1],
+                average.text.split()[2]
+            ]
+            self.__insert_data(baseball_db, average_ERA)
 
     def __vitory_pitcher_crawler(self, soup):
         vitory_pitcher_top5 = soup.select('div.record_list.mt40.mb30 > div.record')[1].text
@@ -69,7 +76,7 @@ class BaseballCrawler():
 
     def __create_table(self, baseball_db):
 
-        sql = '''CREATE TABLE homerun_top5 (
+        sql = '''CREATE TABLE ERA_top5 (
         id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
         player_name varchar(255),
         team_name varchar(255),
@@ -81,10 +88,10 @@ class BaseballCrawler():
         cur.execute(sql)
 
 
-    def __insert_data(self, baseball_db, homerun_top5):
+    def __insert_data(self, baseball_db, average_ERA):
         cur = baseball_db.cursor()
-        sql = '''INSERT INTO homerun_top5 (player_name, team_name, batting_average) values (%s, %s, %s)'''
-        cur.execute(sql,(homerun_top5[0], homerun_top5[1], homerun_top5[2]))
+        sql = '''INSERT INTO ERA_top5 (player_name, team_name, batting_average) values (%s, %s, %s)'''
+        cur.execute(sql,(average_ERA[0], average_ERA[1], average_ERA[2]))
 
         baseball_db.commit()
 
