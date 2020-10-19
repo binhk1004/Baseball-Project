@@ -23,8 +23,8 @@ class BaseballCrawler():
         soup = BeautifulSoup(html,'html.parser')
         # self.__batting_average_crawler(soup)
         # self.__homerun_crawler(soup)
-        self.__average_ERA_crawler(soup)
-        # self.__vitory_pitcher_crawler(soup)
+        # self.__average_ERA_crawler(soup)
+        self.__vitory_pitcher_crawler(soup)
 
     def __batting_average_crawler(self, soup):
         baseball_db = self.__connet_database()
