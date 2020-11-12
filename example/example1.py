@@ -10,13 +10,12 @@ record_page.click()
 html = driver.page_source
 soup = BeautifulSoup(html, 'html.parser')
 
-# averages = soup.select('ol.rankList')[0].select('li')
-#
-# for average in averages :
-#     print(average.text)
+def avaerages_crawler():
+    averages = soup.select('ol.rankList')[0].select('li')
+    for average in averages:
+        print(average.text)
 
-homeruns = soup.select('ol.rankList')[1].select('li')
-
-for homerun in homeruns :
-    print(homerun.text)
-
+def homeruns_crawler():
+    homeruns = soup.select('ol.rankList')[1].select('li')
+    for homerun in homeruns:
+        print(homerun.text)

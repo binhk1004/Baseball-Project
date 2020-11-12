@@ -6,7 +6,7 @@ driver = webdriver.Chrome('/Users/hyun/Downloads/chromedriver 2')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
 class BaseballCrawler():
-    def __init__(self):
+    def start(self):
         self.__move_page()
         # self.__connet_database()
 
@@ -96,4 +96,4 @@ class BaseballCrawler():
         baseball_db.commit()
 
 if __name__ == '__main__':
-    BaseballCrawler()
+    BaseballCrawler().start()
