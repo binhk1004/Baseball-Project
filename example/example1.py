@@ -12,16 +12,11 @@ soup = BeautifulSoup(html, 'html.parser')
 
 averages = soup.select('ol.rankList')[0].select('li')
 
-def average_crawler(averages):
-    for average in averages:
-        print(average.text)
-
 homeruns = soup.select('ol.rankList')[1].select('li')
 
-def homerun_crawler(homeruns):
-    for homerun in homeruns:
-        print(homerun.text)
+def baseball_crawler(averages, homerun):
+    for data in (averages, homerun):
+        print(data)
 
-average_crawler(averages)
-homerun_crawler(homeruns)
+baseball_crawler(averages,homeruns)
 
