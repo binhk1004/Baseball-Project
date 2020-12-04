@@ -11,12 +11,15 @@ html = driver.page_source
 soup = BeautifulSoup(html, 'html.parser')
 
 averages = soup.select('ol.rankList')[0].select('li')
-
 homeruns = soup.select('ol.rankList')[1].select('li')
 
-def baseball_crawler(averages, homerun):
+def remove_list(averages, homerun):
     for data in (averages, homerun):
-        print(data)
+        baseball_crawler(data)
 
-baseball_crawler(averages,homeruns)
+def baseball_crawler(data):
+    for item in data:
+        print(item.text)
+
+remove_list(averages, homeruns)
 
