@@ -1,8 +1,6 @@
 import pymysql
 from app import main
 
-
-
 class HandlingDataBase():
     def __init__(self):
         self.__connet_database()

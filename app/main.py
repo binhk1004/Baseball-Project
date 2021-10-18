@@ -5,11 +5,11 @@ from selenium import webdriver
 driver = webdriver.Chrome('/Users/hyun/Downloads/chromedriver 2')
 url = driver.get('https://www.koreabaseball.com/Default.aspx?vote=true')
 
-class BaseballCrawler():
+
+class BaseballCrawler:
     def start(self):
         self.__move_page()
         # self.__connet_database()
-
 
     def __move_page(self):
         record_page = driver.find_element_by_xpath('//*[@id="lnb"]/li[3]')
@@ -20,7 +20,7 @@ class BaseballCrawler():
 
     def __record_crawler(self, result):
         html = driver.page_source
-        soup = BeautifulSoup(html,'html.parser')
+        soup = BeautifulSoup(html, 'html.parser')
         # self.__batting_average_crawler(soup)
         # self.__homerun_crawler(soup)
         # self.__average_ERA_crawler(soup)
